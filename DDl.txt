@@ -1,0 +1,106 @@
+CREATE DATABASE FLOWERSHOP;
+
+CREATE TABLE client(
+    email VARCHAR(255) NOT NULL,
+    client_phone VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    CONSTRAINT PK_Client PRIMARY KEY (email)
+);
+
+CREATE TABLE order(
+    order_id INT NOT NULL,
+    order_status ENUM('Доставлено', 'Не доставлено') NOT NULL,
+    payment_status ENUM('Оплачено', 'Не оплачено') NOT NULL,
+    date DATE() NOT NULL,
+    order_price INT NOT NULL,
+    payment_method ENUM('Картой на сайте', 'Картой при получении', 'Наличными') NOT NULL,
+    production_method VARCHAR(20) NOT NULL,
+    client_id INT NOT NULL, 
+    CONSTRAINT PK_Order PRIMARY KEY (order_id),
+    CONSTRAINT FK_Client FOREIGN KEY (client_id)
+    REFERENCES client(email)
+);
+
+CREATE TABLE point(
+    adress VARCHAR(255) NOT NULL,
+    work_time TIMESTAMP() NOT NULL,
+    phone VARCHAR(255) NOT NULL,
+    CONSTRAINT PK_Point PRIMARY KEY (adress)
+);
+
+
+CREATE TABLE courier(
+    courier_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) NOT NULL,
+    CONSTRAINT PK_Courier PRIMARY KEY (courier_id)
+);
+
+
+CREATE TABLE delivery(
+    invoice_number VARCHAR(255) NOT NULL,
+    status ENUM('Доставлено', 'Не доставлено') NOT NULL,
+    price INT NOT NULL,
+    time_shot TIMESTAMP() NOT NULL,
+    adress VARCHAR(255) NOT NULL,
+    order_id INT NOT NULL,
+    courier_id INT NOT NULL,
+    CONSTRAINT PK_Delivery PRIMARY KEY (invoice_number),
+    CONSTRAINT FK_Adress FOREIGN KEY (adress)
+    REFERENCES point(adress),
+    CONSTRAINT FK_Courier FOREIGN KEY (courier_id)
+    REFERENCES courier(courier_id),
+    CONSTRAINT FK_Order FOREIGN KEY (order_id)
+    REFERENCES order(order_id)
+);
+
+CREATE TABLE provider(
+    tin INT NOT NULL,
+    price_list LONGTEXT NOT NULL,
+    country VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) NOT NULL,
+    CONSTRAINT PK_Provider PRIMARY KEY (tin)
+);
+
+CREATE TABLE flower(
+    id INT NOT NULL,
+    in_stock INT NOT NULL,
+    order_number INT NOT NULL,
+    shelf_life DATE()NOT NULL,
+    price INT NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    provider_id INT NOT NULL, 
+    CONSTRAINT PK_Flower PRIMARY KEY (id),
+    CONSTRAINT FK_Provider FOREIGN KEY (provider_id)
+    REFERENCES provider(tin)
+);
+
+CREATE TABLE bouquet(
+    id INT NOT NULL,
+    price INT NOT NULL,
+    image VARCHAR(255) NOT NULL, -- будут ссылки на изображения
+    packaging_id INT NOT NULL,
+    CONSTRAINT PK_Bouquet PRIMARY KEY (id),
+    CONSTRAINT FK_Order FOREIGN KEY (packaging_id)
+    REFERENCES packaging(packaging_id)
+);
+
+CREATE TABLE set(
+    id INT NOT NULL,
+    color ENUM('Красный', 'Голубой', 'Белый', 'Зеленый', 'Розовый', 'Прозрачный', 'Фиолетовый') NOT NULL,
+    price INT NOT NULL,
+    flower_number INT NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    CONSTRAINT PK_Set PRIMARY KEY (id)
+);
+
+
+CREATE TABLE packaging(
+    id INT NOT NULL,
+    color ENUM('Красный', 'Голубой', 'Белый', 'Зеленый', 'Розовый', 'Прозрачный', 'Фиолетовый') NOT NULL,
+    price INT NOT NULL,
+    material ENUM('Глянцевая бумага', 'Крафтовая бумага', 'Бумага-сетка') NOT NULL,
+    type ENUM('Бумага', 'Лента', 'Бумага + Лента') NOT NULL,
+    CONSTRAINT PK_Packaging PRIMARY KEY (id)
+);
