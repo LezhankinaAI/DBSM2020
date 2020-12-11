@@ -2,7 +2,7 @@ CREATE DATABASE FLOWERSHOP;
 
 CREATE TABLE client(
     email VARCHAR(255) NOT NULL,
-    client_phone VARCHAR(255) NOT NULL,
+    client_phone VARCHAR(20) NOT NULL,
     name VARCHAR(255) NOT NULL,
     CONSTRAINT PK_Client PRIMARY KEY (email)
 );
@@ -41,17 +41,14 @@ CREATE TABLE delivery(
     invoice_number VARCHAR(255) NOT NULL,
     status ENUM('Доставлено', 'Не доставлено') NOT NULL,
     price INT NOT NULL,
-    time_shot TIMESTAMP() NOT NULL,
+    time_shot DATETIME NOT NULL,
     adress VARCHAR(255) NOT NULL,
     order_id INT NOT NULL,
     courier_id INT NOT NULL,
     CONSTRAINT PK_Delivery PRIMARY KEY (invoice_number),
-    CONSTRAINT FK_Adress FOREIGN KEY (adress)
-    REFERENCES point(adress),
-    CONSTRAINT FK_Courier FOREIGN KEY (courier_id)
-    REFERENCES courier(courier_id),
-    CONSTRAINT FK_Order FOREIGN KEY (order_id)
-    REFERENCES order(order_id)
+    CONSTRAINT FK_Adress FOREIGN KEY (adress) REFERENCES point(adress),
+    CONSTRAINT FK_Courier FOREIGN KEY (courier_id) REFERENCES courier(courier_id),
+    CONSTRAINT FK_Order FOREIGN KEY (order_id) REFERENCES order(order_id)
 );
 
 CREATE TABLE provider(
@@ -73,8 +70,7 @@ CREATE TABLE flower(
     image VARCHAR(255) NOT NULL, -- будут ссылки на изображения
     provider_id INT NOT NULL,
     CONSTRAINT PK_Flower PRIMARY KEY (id),
-    CONSTRAINT FK_Provider FOREIGN KEY (provider_id)
-    REFERENCES provider(tin)
+    CONSTRAINT FK_Provider FOREIGN KEY (provider_id) REFERENCES provider(tin)
 );
 
 CREATE TABLE bouquet(
@@ -83,8 +79,7 @@ CREATE TABLE bouquet(
     image VARCHAR(255), -- будут ссылки на изображения
     packaging_id INT,
     CONSTRAINT PK_Bouquet PRIMARY KEY (id),
-    CONSTRAINT FK_Order FOREIGN KEY (packaging_id)
-    REFERENCES packaging(packaging_id)
+    CONSTRAINT FK_Order FOREIGN KEY (packaging_id) REFERENCES packaging(packaging_id)
 );
 
 CREATE TABLE packaging(
