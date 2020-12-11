@@ -76,7 +76,6 @@ CREATE TABLE flower(
 CREATE TABLE bouquet(
     id INT NOT NULL,
     price INT NOT NULL,
-    image VARCHAR(255), -- будут ссылки на изображения
     packaging_id INT,
     CONSTRAINT PK_Bouquet PRIMARY KEY (id),
     CONSTRAINT FK_Order FOREIGN KEY (packaging_id) REFERENCES packaging(packaging_id)
