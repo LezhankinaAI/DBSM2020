@@ -77,7 +77,7 @@ CREATE TABLE bouquet(
     price INT NOT NULL,
     packaging_id INT,
     CONSTRAINT PK_Bouquet PRIMARY KEY (id),
-    CONSTRAINT FK_Order FOREIGN KEY (packaging_id) REFERENCES packaging(packaging_id)
+    CONSTRAINT FK_Order FOREIGN KEY (packaging_id) REFERENCES packaging(id)
 );
 
 CREATE TABLE packaging(
