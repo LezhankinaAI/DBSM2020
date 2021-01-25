@@ -65,15 +65,15 @@ def main():
 
     # Подключение к азуру
     connection_string = "Driver={ODBC Driver 17 for SQL Server};" \
-                        "Server=tcp:2020hsedbmstest.database.windows.net;" \
-                        "Database=AdventureWorksLT;" \
-                        "uid=stud20;pwd=!Student2020"
+                        "Server;" \
+                        "Database;" \
+                        "uid;pwd"
     conn = pyodbc.connect(connection_string)
     cursor = conn.cursor()
 
     # Получение апи
     vk_session = vk_api.VkApi(
-        token='c6220e9472a633caf92d8616de576b675ba3fbe59e7ca164178ec2478cbcf8505d100c23948ee17a327db')
+        token='')
     longpoll = VkBotLongPoll(vk_session, GROUPID)
     vk = vk_session.get_api()
 
